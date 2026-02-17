@@ -42,12 +42,40 @@ export default function useGenerateCards({ count }: useGenerateCardsProps) {
   }, [count]);
 
   const onFlip = (id: number) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        card.id === id ? { ...card, isFliped: !card.isFliped } : card
-      )
-    );
+    const flippedCount = cards.filter((c) => c.isFliped && !c.isGuessed).length;
+
+    if (flippedCount < 2) {
+      setCards((prev) =>
+        prev.map((card) =>
+          card.id === id ? { ...card, isFliped: true } : card
+        )
+      );
+    }
   };
+
+  useEffect(() => {
+    const flippedCards = cards.filter((c) => c.isFliped && !c.isGuessed);
+
+    if (flippedCards.length === 2) {
+      const [card1, card2] = flippedCards;
+
+      if (card1.content === card2.content) {
+        setCards((prev) =>
+          prev.map((c) =>
+            c.content === card1.content ? { ...c, isGuessed: true } : c
+          )
+        );
+      } else {
+        setTimeout(() => {
+          setCards((prev) =>
+            prev.map((c) =>
+              c.isFliped && !c.isGuessed ? { ...c, isFliped: false } : c
+            )
+          );
+        }, 1000);
+      }
+    }
+  }, [cards]);
 
   return { cards, onFlip };
 }
