@@ -6,6 +6,18 @@ type useGenerateCardsProps = {
   count: number;
 };
 
+function ShuffleCards(cards: MemoryCard[]) {
+  const result = [...cards];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+}
+
 export default function useGenerateCards({ count }: useGenerateCardsProps) {
   const [cards, setCards] = useState<MemoryCard[]>([]);
 
@@ -20,7 +32,8 @@ export default function useGenerateCards({ count }: useGenerateCardsProps) {
         isGuessed: false,
       })
     );
-    setCards(gameCards);
+    const shuffledCards = ShuffleCards(gameCards);
+    setCards(shuffledCards);
   }, [count]);
 
   const onFlip = (id: number) => {
