@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { MemoryCard } from "../types";
-import { EMOJIES } from "../data/constants";
+import { EMOJIS } from "../data/constants";
 
 type useGenerateCardsProps = {
   count: number;
@@ -22,7 +22,7 @@ export default function useGenerateCards({ count }: useGenerateCardsProps) {
   const [cards, setCards] = useState<MemoryCard[]>([]);
 
   useEffect(() => {
-    const selectedEmojis = EMOJIES.slice(0, count);
+    const selectedEmojis = EMOJIS.slice(0, count / 2);
 
     const gameCards: MemoryCard[] = [...selectedEmojis, ...selectedEmojis].map(
       (emoji, index) => ({
