@@ -70,6 +70,16 @@ export default function useGenerateCards({ count }: useGenerateCardsProps) {
         }, 1000);
       }
     }
+
+    const isWon = cards.every((c) => c.isGuessed);
+
+    if (isWon) {
+      setTimeout(() => {
+        setCards((prev) =>
+          prev.map((card) => ({ ...card, isFliped: false, isGuessed: false }))
+        );
+      }, 1000);
+    }
   }, [cards]);
 
   return { cards, onFlip };
